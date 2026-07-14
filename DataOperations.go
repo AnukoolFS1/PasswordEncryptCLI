@@ -46,3 +46,15 @@ func SaveData(entries []Entry) (string, error) {
 	}
 	return "File has been saved", nil //errors.New("Something wrong")
 }
+
+func RetrieveData() []Entry {
+	data, err := os.ReadFile("password.json")
+
+	var entries []Entry
+	json.Unmarshal(data, &entries)
+
+	if err != nil {
+		panic(err)
+	}
+	return entries
+}

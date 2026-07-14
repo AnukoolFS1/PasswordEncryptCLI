@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	// "errors"
 	"fmt"
 	"os"
 )
@@ -14,7 +12,16 @@ type Entry struct {
 }
 
 func main() {
-	// entries := basic()
+	TerminalArgs := os.Args
+
+	switch TerminalArgs[1] {
+	case "add":
+
+	case "retrieve":
+
+	case "list":
+
+	}
 
 	// fmt.Println()
 	// result, err := SaveData(entries)
@@ -26,23 +33,4 @@ func main() {
 	// }
 
 	fmt.Println(RetrieveData())
-
 }
-
-
-
-
-
-func RetrieveData() []Entry {
-	data, err := os.ReadFile("password.json")
-
-	var entries []Entry
-	json.Unmarshal(data, &entries)
-
-	if err != nil {
-		panic(err)
-	}
-	return entries
-}
-
-
