@@ -2,42 +2,29 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 )
 
-func basic() []Entry {
+func add(entry Entry) {
 	var entries []Entry
 
-	entry := Entry{
-		"Git", "Anukool", "123456",
+	data, err := os.ReadFile("password.json")
+
+	if err != nil {
+		json.Unmarshal(data, &entries)
+
+		defer SaveData(entries, entry)
+	} else {
+		SaveData(entries, entry)
 	}
-
-	entries = append(entries, entry)
-
-	fmt.Println(entries)
-
-	var service string
-	var username string
-	var password string
-
-	fmt.Println("Servie: ")
-	fmt.Scanln(&service)
-
-	fmt.Println("Username: ")
-	fmt.Scanln(&username)
-
-	fmt.Println("Password: ")
-	fmt.Scanln(&password)
-
-	entry = Entry{Service: service, Username: username, Password: password}
-	entries = append(entries, entry)
-
-	return entries
 }
 
-func SaveData(entries []Entry) (string, error) {
+func SaveData(entries []Entry, entry Entry) (string, error) {
+	entries = append(entries, entry)
+
 	data, _ := json.Marshal(entries)
+
+	// os.WriteFile("password.json", data, 0644)
 
 	err := os.WriteFile("password.json", data, 0644)
 
@@ -47,7 +34,7 @@ func SaveData(entries []Entry) (string, error) {
 	return "File has been saved", nil //errors.New("Something wrong")
 }
 
-func RetrieveData() []Entry {
+func Retrieve(username string) Entry {
 	data, err := os.ReadFile("password.json")
 
 	var entries []Entry
@@ -58,3 +45,45 @@ func RetrieveData() []Entry {
 	}
 	return entries
 }
+
+func List() []Entry {
+	data, err := os.ReadFile("password.json")
+
+	var entries []Entry
+	json.Unmarshal(data, &entries)
+
+	if err != nil {
+		panic(err)
+	}
+	return entries
+}
+
+// func basic() []Entry {
+// 	var entries []Entry
+
+// 	entry := Entry{
+// 		"Git", "Anukool", "123456",
+// 	}
+
+// 	entries = append(entries, entry)
+
+// 	fmt.Println(entries)
+
+// 	var service string
+// 	var username string
+// 	var password string
+
+// 	fmt.Println("Servie: ")
+// 	fmt.Scanln(&service)
+
+// 	fmt.Println("Username: ")
+// 	fmt.Scanln(&username)
+
+// 	fmt.Println("Password: ")
+// 	fmt.Scanln(&password)
+
+// 	entry = Entry{Service: service, Username: username, Password: password}
+// 	entries = append(entries, entry)
+
+// 	return entries
+// }

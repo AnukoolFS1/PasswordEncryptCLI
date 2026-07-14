@@ -16,13 +16,20 @@ func main() {
 
 	switch TerminalArgs[1] {
 	case "add":
-		fmt.Println("You want to add")
+		if len(TerminalArgs) < 5 {
+			fmt.Println("Please complete provide arguments: add [service] [username] [password]")
+		}
+		fmt.Println("Adding data, Please Wait...")
+		add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
+		fmt.Println("Data has been added.")
 
 	case "retrieve":
-		fmt.Println("You want to retrieve")
+		fmt.Println("Retrieve data, Please Wait...")
+		Retrieve()
 
 	case "list":
 		fmt.Println("You want to list")
+		List()
 
 	}
 
