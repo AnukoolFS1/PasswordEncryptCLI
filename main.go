@@ -13,6 +13,8 @@ type Entry struct {
 
 func main() {
 	TerminalArgs := os.Args
+	var result string
+	var err error
 
 	switch TerminalArgs[1] {
 	case "add":
@@ -20,20 +22,25 @@ func main() {
 			fmt.Println("Please complete provide arguments: add [service] [username] [password]")
 		}
 		fmt.Println("Adding data, Please Wait...")
-		add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
-		fmt.Println("Data has been added.")
+		result, err = add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
 
 	case "retrieve":
 		fmt.Println("Retrieve data, Please Wait...")
-		Retrieve()
+		Retrieve(TerminalArgs[2])
 
 	case "list":
 		fmt.Println("You want to list")
 		List()
 
+	default:
+		fmt.Println("Command not found")
+
 	}
 
-	// fmt.Println()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(result)
 	// result, err := SaveData(entries)
 
 	// if err != nil {

@@ -2,21 +2,29 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 )
 
-func add(entry Entry) {
+func add(entry Entry) (string, error) {
 	var entries []Entry
 
 	data, err := os.ReadFile("password.json")
 
 	if err != nil {
+		SaveData(entries, entry)
+	} else {
 		json.Unmarshal(data, &entries)
 
-		defer SaveData(entries, entry)
-	} else {
+		for _, users := range entries {
+			if users.Username == entry.Username {
+				return "", errors.New("UserName already exists \nPlease try with another username")
+			}
+		}
+
 		SaveData(entries, entry)
 	}
+	return "Entry has been added.", nil
 }
 
 func SaveData(entries []Entry, entry Entry) (string, error) {
@@ -35,15 +43,22 @@ func SaveData(entries []Entry, entry Entry) (string, error) {
 }
 
 func Retrieve(username string) Entry {
+	var userdata Entry
 	data, err := os.ReadFile("password.json")
-
-	var entries []Entry
-	json.Unmarshal(data, &entries)
 
 	if err != nil {
 		panic(err)
 	}
-	return entries
+
+	var entries []Entry
+	json.Unmarshal(data, &entries)
+
+	for _, entry := range entries {
+		if entry.Username == username {
+			userdata = entry
+		}
+	}
+	return userdata
 }
 
 func List() []Entry {
