@@ -25,12 +25,14 @@ func main() {
 		result, err = add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
 
 	case "retrieve":
-		fmt.Println("Retrieve data, Please Wait...")
-		Retrieve(TerminalArgs[2])
+		fmt.Println("Retrieving data, Please Wait...")
+		userdata := Retrieve(TerminalArgs[2])
+		fmt.Println(userdata)
 
 	case "list":
 		fmt.Println("You want to list")
-		List()
+		entries := List()
+		fmt.Println(entries)
 
 	default:
 		fmt.Println("Command not found")
@@ -50,4 +52,18 @@ func main() {
 	// }
 
 	// fmt.Println(RetrieveData())
+}
+
+func (entry Entry) String() string {
+
+	return fmt.Sprintf("Username: %v\nService: %v\nPassword: %v\n", entry.Username, entry.Service, entry.Password)
+}
+
+func (entry DuplicateTypeEntry) String() string {
+
+	return fmt.Sprintf(
+		"\nUsername: %s | Service: %s | Password: %s",
+		entry.Username,
+		entry.Service,
+		entry.Password)
 }

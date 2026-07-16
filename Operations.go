@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+type DuplicateTypeEntry Entry
+
 func add(entry Entry) (string, error) {
 	var entries []Entry
 
@@ -61,10 +63,10 @@ func Retrieve(username string) Entry {
 	return userdata
 }
 
-func List() []Entry {
+func List() []DuplicateTypeEntry {
 	data, err := os.ReadFile("password.json")
 
-	var entries []Entry
+	var entries []DuplicateTypeEntry
 	json.Unmarshal(data, &entries)
 
 	if err != nil {
