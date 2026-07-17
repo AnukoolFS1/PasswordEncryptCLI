@@ -16,17 +16,30 @@ func main() {
 	var result string
 	var err error
 
+	if len(TerminalArgs) < 2 {
+		fmt.Println("Usage:")
+		fmt.Println("add [service] [username] [password]")
+		fmt.Println("get [username]")
+		fmt.Println("list")
+		return
+	}
+
 	switch TerminalArgs[1] {
 	case "add":
 		if len(TerminalArgs) < 5 {
-			fmt.Println("Please complete provide arguments: add [service] [username] [password]")
+			fmt.Println("Please provide:")
+			fmt.Println("add [service] [username] [password]")
+			return
 		}
 		fmt.Println("Adding data, Please Wait...")
 		result, err = add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
 
-	case "retrieve":
+	case "get":
 		fmt.Println("Retrieving data, Please Wait...")
-		userdata := Retrieve(TerminalArgs[2])
+		userdata, err := Retrieve(TerminalArgs[2])
+		if err != nil {
+			fmt.Println(err)
+		}
 		fmt.Println(userdata)
 
 	case "list":

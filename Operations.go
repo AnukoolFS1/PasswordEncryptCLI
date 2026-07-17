@@ -16,7 +16,10 @@ func add(entry Entry) (string, error) {
 	if err != nil {
 		SaveData(entries, entry)
 	} else {
-		json.Unmarshal(data, &entries)
+		err := json.Unmarshal(data, &entries)
+		if err != nil {
+			return "", errors.New("Data has been corrupted.")
+		}
 
 		for _, users := range entries {
 			if users.Username == entry.Username {
@@ -44,23 +47,28 @@ func SaveData(entries []Entry, entry Entry) (string, error) {
 	return "File has been saved", nil //errors.New("Something wrong")
 }
 
-func Retrieve(username string) Entry {
+func Retrieve(username string) (Entry, error) {
 	var userdata Entry
 	data, err := os.ReadFile("password.json")
-
 	if err != nil {
-		panic(err)
+		return Entry{}, err
 	}
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	var entries []Entry
-	json.Unmarshal(data, &entries)
+	err = json.Unmarshal(data, &entries)
+	if err != nil {
+		return Entry{}, errors.New("Data has been corrupted.")
+	}
 
 	for _, entry := range entries {
 		if entry.Username == username {
 			userdata = entry
 		}
 	}
-	return userdata
+	return userdata, nil
 }
 
 func List() []DuplicateTypeEntry {
