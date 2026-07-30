@@ -83,6 +83,10 @@ func List() []DuplicateTypeEntry {
 	return entries
 }
 
+func delete() {
+	
+}
+
 // func basic() []Entry {
 // 	var entries []Entry
 
