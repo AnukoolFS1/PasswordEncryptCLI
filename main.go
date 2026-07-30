@@ -32,7 +32,7 @@ func main() {
 			return
 		}
 		fmt.Println("Adding data, Please Wait...")
-		result, err = add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
+		result, err = Add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
 
 	case "get":
 		fmt.Println("Retrieving data, Please Wait...")
@@ -46,6 +46,12 @@ func main() {
 		fmt.Println("You want to list")
 		entries := List()
 		fmt.Println(entries)
+
+	case "delete":
+		if len(TerminalArgs) == 2 || len(TerminalArgs) < 3 {
+			fmt.Println("Please provide a username to delete entry.")
+		}
+		DeleteUser(TerminalArgs[2])
 
 	default:
 		fmt.Println("Command not found")

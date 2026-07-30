@@ -8,7 +8,7 @@ import (
 
 type DuplicateTypeEntry Entry
 
-func add(entry Entry) (string, error) {
+func Add(entry Entry) (string, error) {
 	var entries []Entry
 
 	data, err := os.ReadFile("password.json")
@@ -83,8 +83,9 @@ func List() []DuplicateTypeEntry {
 	return entries
 }
 
-func delete() {
-	
+func DeleteUser(username string) string {
+
+	return "User has been removed."
 }
 
 // func basic() []Entry {
