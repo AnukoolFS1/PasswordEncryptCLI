@@ -73,18 +73,44 @@ func Retrieve(username string) (Entry, error) {
 
 func List() []DuplicateTypeEntry {
 	data, err := os.ReadFile("password.json")
+	if err != nil {
+		panic(err)
+	}
 
 	var entries []DuplicateTypeEntry
 	json.Unmarshal(data, &entries)
 
-	if err != nil {
-		panic(err)
-	}
 	return entries
 }
 
 func DeleteUser(username string) string {
+	data, err := os.ReadFile("password.json")
+	if err != nil {
+		panic(err)
+	}
 
+	var NewEntries []Entry = make([]Entry, 0)
+	var usernames = make(map[string]int)
+	var entries []Entry
+	json.Unmarshal(data, &entries)
+
+	for _, entry := range entries {
+		if username != entry.Username {
+			NewEntries = append(NewEntries, entry)
+		}
+		usernames[entry.Username]++
+	}
+	if _, exist := usernames[username]; !exist {
+		return "No Username has been found"
+	}
+	
+	data, err = json.Marshal(NewEntries)
+	if err != nil {
+		panic(err)
+	}
+	
+	err = os.WriteFile("password.json", data, 0644)
+	
 	return "User has been removed."
 }
 

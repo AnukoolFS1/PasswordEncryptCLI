@@ -50,8 +50,9 @@ func main() {
 	case "delete":
 		if len(TerminalArgs) == 2 || len(TerminalArgs) < 3 {
 			fmt.Println("Please provide a username to delete entry.")
+		} else {
+			result = DeleteUser(TerminalArgs[2])
 		}
-		DeleteUser(TerminalArgs[2])
 
 	default:
 		fmt.Println("Command not found")
