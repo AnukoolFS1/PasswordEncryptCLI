@@ -83,6 +83,38 @@ func List() []DuplicateTypeEntry {
 	return entries
 }
 
+func UpdatePassword(username, password string) string {
+	data, err := os.ReadFile("password.json")
+	if err != nil {
+		panic(err)
+	}
+
+	var NewEntries []Entry = make([]Entry, 0)
+	var entries []Entry
+	json.Unmarshal(data, &entries)
+
+	for _, entry := range entries {
+		if username == entry.Username {
+			NewEntries = append(NewEntries,
+				Entry{
+					Username: username,
+					Service:  entry.Service,
+					Password: password})
+		} else {
+			NewEntries = append(NewEntries, entry)
+		}
+	}
+
+	data, err = json.Marshal(NewEntries)
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile("password.json", data, 0644)
+
+	return "Password has been changed"
+}
+
 func DeleteUser(username string) string {
 	data, err := os.ReadFile("password.json")
 	if err != nil {
@@ -103,51 +135,16 @@ func DeleteUser(username string) string {
 	if _, exist := usernames[username]; !exist {
 		return "No Username has been found"
 	}
-	
+
 	data, err = json.Marshal(NewEntries)
 	if err != nil {
 		panic(err)
 	}
-	
+
 	err = os.WriteFile("password.json", data, 0644)
-	
+
 	return "User has been removed."
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // func basic() []Entry {
 // 	var entries []Entry

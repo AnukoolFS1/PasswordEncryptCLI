@@ -54,6 +54,13 @@ func main() {
 			result = DeleteUser(TerminalArgs[2])
 		}
 
+	case "update":
+		if len(TerminalArgs) == 3 || len(TerminalArgs) < 4 {
+			fmt.Println("Please provide a username to delete entry.")
+		} else {
+			result = UpdatePassword(TerminalArgs[2], TerminalArgs[3])
+		}
+	
 	default:
 		fmt.Println("Command not found")
 
