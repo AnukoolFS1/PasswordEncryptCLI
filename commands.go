@@ -5,7 +5,6 @@ import (
 	"fmt"
 )
 
-
 func HandleAdd(args []string) {
 	if len(args) < 5 {
 		SuccessOrError("", errors.New("Please provide:\nadd [service] [username] [password]"))
@@ -46,7 +45,9 @@ func HandleList(args []string) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(entries)
+	for _, entry := range entries {
+		fmt.Println(entry.SafeString())
+	}
 }
 
 func SuccessOrError(success string, err error) {

@@ -13,7 +13,7 @@ func LoadEntries() ([]Entry, error) {
 
 	data, err := os.ReadFile(Databasefile)
 	if err != nil {
-		return make([]Entry, 0), errors.New("Database not found! Please create a new database first with command. PasswordEncrypt create Database")
+		return make([]Entry, 0), errors.New("Database not found! Please create a new database first with command. PasswordEncrypt create-db")
 	}
 
 	err = json.Unmarshal(data, &entries)
@@ -25,9 +25,7 @@ func LoadEntries() ([]Entry, error) {
 }
 
 func SaveEntries(entries []Entry) (string, error) {
-	data, _ := json.Marshal(entries)
-
-	// os.WriteFile(database, data, 0644)
+	data, _ := json.MarshalIndent(entries,"", "	")
 
 	err := os.WriteFile(Databasefile, data, 0644)
 
@@ -38,7 +36,8 @@ func SaveEntries(entries []Entry) (string, error) {
 }
 
 func CreateDb() (string, error) {
-	_, err := os.Create(Databasefile)
+	data, _ := json.Marshal(make([]Entry, 0))
+	err := os.WriteFile(Databasefile, data, 0644)
 
 	if err != nil {
 		return "", err

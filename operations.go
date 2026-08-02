@@ -23,7 +23,7 @@ func Add(entry Entry) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	
+
 	return "Entry has been added.", nil
 }
 
@@ -41,16 +41,12 @@ func Retrieve(username string) (Entry, error) {
 	return Entry{}, errors.New("User not found.")
 }
 
-func List() ([]DuplicateTypeEntry, error) {
-	data, err := LoadEntries()
+func List() ([]Entry, error) {
+	entries, err := LoadEntries()
 	if err != nil {
-		return make([]DuplicateTypeEntry, 0), errors.New("An error occured during database reading")
+		return make([]Entry, 0), errors.New("An error occured during database reading")
 	}
 
-	var entries []DuplicateTypeEntry = make([]DuplicateTypeEntry, 0)
-	for _, entry := range data {
-		entries = append(entries, DuplicateTypeEntry(entry))
-	}
 	return entries, nil
 }
 
@@ -95,7 +91,7 @@ func DeleteUser(username string) (string, error) {
 		}
 		NewEntries = append(NewEntries, entry)
 	}
-	if found {
+	if !found {
 		return "", errors.New("User not found.")
 	}
 

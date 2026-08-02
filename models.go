@@ -10,15 +10,12 @@ type Entry struct {
 	Password string
 }
 
-type DuplicateTypeEntry Entry
-
-
 func (entry Entry) String() string {
 
 	return fmt.Sprintf("Username: %v\nService: %v\nPassword: %v\n", entry.Username, entry.Service, entry.Password)
 }
 
-func (entry DuplicateTypeEntry) String() string {
+func (entry Entry) SafeString() string {
 
 	return fmt.Sprintf(
 		"\nUsername: %s | Service: %s | Password: %s",

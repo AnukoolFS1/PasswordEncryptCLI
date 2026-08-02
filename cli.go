@@ -8,6 +8,8 @@ func CheckArgs(args []string) bool {
 	if len(args) < 2 {
 		fmt.Println("Usage:")
 		fmt.Println("add [service] [username] [password]")
+		fmt.Println("update [username] [password]")
+		fmt.Println("delete [username]")
 		fmt.Println("get [username]")
 		fmt.Println("list")
 		return false
@@ -33,9 +35,10 @@ func ArgsFunc(args []string) {
 	case "update":
 		HandleUpdate(args)
 
-	case "create Database":
+	case "create-db":
 		CreateDb()
-
+		fmt.Println("Database has been created.")
+		
 	default:
 		fmt.Println("Command not found")
 	}
