@@ -6,45 +6,23 @@ import (
 	"os"
 )
 
-var Databasefile string = "passwords.json"
-
 func Add(entry Entry) (string, error) {
-	var entries []Entry
-
-	data, err := os.ReadFile(Databasefile)
-
-	if err != nil {
-		SaveData(entries, entry)
-	} else {
-		err := json.Unmarshal(data, &entries)
-		if err != nil {
-			return "", errors.New("Data has been corrupted.")
-		}
-
-		for _, users := range entries {
-			if users.Username == entry.Username {
-				return "", errors.New("UserName already exists \nPlease try with another username")
-			}
-		}
-
-		SaveData(entries, entry)
-	}
-	return "Entry has been added.", nil
-}
-
-func SaveData(entries []Entry, entry Entry) (string, error) {
-	entries = append(entries, entry)
-
-	data, _ := json.Marshal(entries)
-
-	// os.WriteFile(database, data, 0644)
-
-	err := os.WriteFile(Databasefile, data, 0644)
+	entries, err := LoadEntries()
 
 	if err != nil {
 		return "", err
 	}
-	return "File has been saved", nil //errors.New("Something wrong")
+
+	for _, users := range entries {
+		if users.Username == entry.Username {
+			return "", errors.New("UserName already exists \nPlease try with another username")
+		}
+	}
+
+	entries = append(entries, entry)
+
+	SaveEntries(entries)
+	return "Entry has been added.", nil
 }
 
 func Retrieve(username string) (Entry, error) {

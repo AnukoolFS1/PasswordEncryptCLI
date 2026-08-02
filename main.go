@@ -1,37 +1,37 @@
 package main
 
-import (
-	"fmt"
-)
+// import (
+// 	"fmt"
+// )
 
 func main() {
+	CreateNew()
 
+	// if len(TerminalArgs) < 2 {
+	// 	fmt.Println("Usage:")
+	// 	fmt.Println("add [service] [username] [password]")
+	// 	fmt.Println("get [username]")
+	// 	fmt.Println("list")
+	// 	return
+	// }
 
-	if len(TerminalArgs) < 2 {
-		fmt.Println("Usage:")
-		fmt.Println("add [service] [username] [password]")
-		fmt.Println("get [username]")
-		fmt.Println("list")
-		return
-	}
+	// switch TerminalArgs[1] {
+	// case "add":
+	// 	HandleAdd()
 
-	switch TerminalArgs[1] {
-	case "add":
-		HandleAdd()
+	// case "get":
+	// 	HandleGet()
 
-	case "get":
-		HandleGet()
+	// case "list":
+	// 	HandleList()
 
-	case "list":
-		HandleList()
+	// case "delete":
+	// 	HandleDelete()
 
-	case "delete":
-		HandleDelete()
+	// case "update":
+	// 	HandleUpdate()
 
-	case "update":
-		HandleUpdate()
-
-	default:
-		fmt.Println("Command not found")
-	}
+	// default:
+	// 	fmt.Println("Command not found")
+	// }
 }
