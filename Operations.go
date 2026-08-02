@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
-	"os"
 )
 
 func Add(entry Entry) (string, error) {
@@ -21,105 +19,90 @@ func Add(entry Entry) (string, error) {
 
 	entries = append(entries, entry)
 
-	SaveEntries(entries)
+	_, err = SaveEntries(entries)
+	if err != nil {
+		return "", err
+	}
+	
 	return "Entry has been added.", nil
 }
 
 func Retrieve(username string) (Entry, error) {
-	var userdata Entry
-	data, err := os.ReadFile(Databasefile)
+	entries, err := LoadEntries()
 	if err != nil {
 		return Entry{}, err
-	}
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	var entries []Entry
-	err = json.Unmarshal(data, &entries)
-	if err != nil {
-		return Entry{}, errors.New("Data has been corrupted.")
 	}
 
 	for _, entry := range entries {
 		if entry.Username == username {
-			userdata = entry
+			return entry, nil
 		}
 	}
-	return userdata, nil
+	return Entry{}, errors.New("User not found.")
 }
 
 func List() ([]DuplicateTypeEntry, error) {
-	data, err := os.ReadFile(Databasefile)
+	data, err := LoadEntries()
 	if err != nil {
 		return make([]DuplicateTypeEntry, 0), errors.New("An error occured during database reading")
 	}
 
-	var entries []DuplicateTypeEntry
-	json.Unmarshal(data, &entries)
-
+	var entries []DuplicateTypeEntry = make([]DuplicateTypeEntry, 0)
+	for _, entry := range data {
+		entries = append(entries, DuplicateTypeEntry(entry))
+	}
 	return entries, nil
 }
 
 func UpdatePassword(username, password string) (string, error) {
-	data, err := os.ReadFile(Databasefile)
+	entries, err := LoadEntries()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	var NewEntries []Entry = make([]Entry, 0)
-	var entries []Entry
-	json.Unmarshal(data, &entries)
 
 	for _, entry := range entries {
 		if username == entry.Username {
-			NewEntries = append(NewEntries,
-				Entry{
-					Username: username,
-					Service:  entry.Service,
-					Password: password})
+			entry.Password = password
+			NewEntries = append(NewEntries, entry)
 		} else {
 			NewEntries = append(NewEntries, entry)
 		}
 	}
 
-	data, err = json.Marshal(NewEntries)
-	if err != nil {
-		return "", errors.New("Data has been corrupted")
+	_, erro := SaveEntries(NewEntries)
+	if erro != nil {
+		return "", erro
 	}
 
-	err = os.WriteFile(Databasefile, data, 0644)
-
-	return "Password has been changed", nil
+	return "Password has been changed", err
 }
 
 func DeleteUser(username string) (string, error) {
-	data, err := os.ReadFile(Databasefile)
+	entries, err := LoadEntries()
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	var NewEntries []Entry = make([]Entry, 0)
-	var usernames = make(map[string]int)
-	var entries []Entry
-	json.Unmarshal(data, &entries)
+	found := false
 
 	for _, entry := range entries {
-		if username != entry.Username {
-			NewEntries = append(NewEntries, entry)
+		if username == entry.Username {
+			found = true
+			continue
 		}
-		usernames[entry.Username]++
+		NewEntries = append(NewEntries, entry)
 	}
-	if _, exist := usernames[username]; !exist {
-		return "", errors.New("No Username has been found")
+	if found {
+		return "", errors.New("User not found.")
 	}
 
-	data, err = json.Marshal(NewEntries)
+	_, err = SaveEntries(NewEntries)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-
-	err = os.WriteFile(Databasefile, data, 0644)
 
 	return "User has been removed.", nil
 }

@@ -3,46 +3,44 @@ package main
 import (
 	"errors"
 	"fmt"
-	"os"
 )
 
-var TerminalArgs = os.Args
 
-func HandleAdd() {
-	if len(TerminalArgs) < 5 {
+func HandleAdd(args []string) {
+	if len(args) < 5 {
 		SuccessOrError("", errors.New("Please provide:\nadd [service] [username] [password]"))
 		return
 	}
 	fmt.Println("Adding data, Please Wait...")
-	result, err := Add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
+	result, err := Add(Entry{args[2], args[3], args[4]})
 	SuccessOrError(result, err)
 }
 
-func HandleGet() {
+func HandleGet(args []string) {
 	fmt.Println("Retrieving data, Please Wait...")
-	userdata, err := Retrieve(TerminalArgs[2])
+	userdata, err := Retrieve(args[2])
 	SuccessOrError(userdata.String(), err)
 }
 
-func HandleUpdate() {
-	if len(TerminalArgs) == 3 || len(TerminalArgs) < 4 {
+func HandleUpdate(args []string) {
+	if len(args) < 4 {
 		fmt.Println("Please provide a username to delete entry.")
 	} else {
-		result, err := UpdatePassword(TerminalArgs[2], TerminalArgs[3])
+		result, err := UpdatePassword(args[2], args[3])
 		SuccessOrError(result, err)
 	}
 }
 
-func HandleDelete() {
-	if len(TerminalArgs) == 2 || len(TerminalArgs) < 3 {
+func HandleDelete(args []string) {
+	if len(args) < 3 {
 		fmt.Println("Please provide a username to delete entry.")
 	} else {
-		result, err := DeleteUser(TerminalArgs[2])
+		result, err := DeleteUser(args[2])
 		SuccessOrError(result, err)
 	}
 }
 
-func HandleList() {
+func HandleList(args []string) {
 	fmt.Println("Listing Data... Please Wait.")
 	entries, err := List()
 	if err != nil {

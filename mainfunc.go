@@ -4,32 +4,34 @@ import (
 	"fmt"
 )
 
-func CheckArgs(args []string) {
+func CheckArgs(args []string) bool {
 	if len(args) < 2 {
 		fmt.Println("Usage:")
 		fmt.Println("add [service] [username] [password]")
 		fmt.Println("get [username]")
 		fmt.Println("list")
-		return
+		return false
 	}
+
+	return true
 }
 
 func ArgsFunc(args []string) {
 	switch args[1] {
 	case "add":
-		HandleAdd()
+		HandleAdd(args)
 
 	case "get":
-		HandleGet()
+		HandleGet(args)
 
 	case "list":
-		HandleList()
+		HandleList(args)
 
 	case "delete":
-		HandleDelete()
+		HandleDelete(args)
 
 	case "update":
-		HandleUpdate()
+		HandleUpdate(args)
 
 	case "create Database":
 		CreateDb()

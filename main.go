@@ -6,7 +6,10 @@ import (
 
 func main() {
 	TerminalArgs := os.Args
-	CheckArgs(TerminalArgs)
+
+	if !CheckArgs(TerminalArgs) {
+		return
+	}
 
 	ArgsFunc(TerminalArgs)
 }
