@@ -114,6 +114,41 @@ func DeleteUser(username string) string {
 	return "User has been removed."
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // func basic() []Entry {
 // 	var entries []Entry
 
