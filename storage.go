@@ -37,7 +37,7 @@ func SaveEntries(entries []Entry) (string, error) {
 	return "File has been saved", nil //errors.New("Something wrong")
 }
 
-func CreateNew() (string, error) {
+func CreateDb() (string, error) {
 	_, err := os.Create(Databasefile)
 
 	if err != nil {
