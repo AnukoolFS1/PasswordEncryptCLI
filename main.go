@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 )
 
 type Entry struct {
@@ -12,7 +11,6 @@ type Entry struct {
 }
 
 func main() {
-	TerminalArgs := os.Args
 	var result string
 	var err error
 
