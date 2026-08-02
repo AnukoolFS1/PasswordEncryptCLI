@@ -6,8 +6,6 @@ import (
 	"os"
 )
 
-type DuplicateTypeEntry Entry
-
 func Add(entry Entry) (string, error) {
 	var entries []Entry
 
