@@ -6,10 +6,12 @@ import (
 	"os"
 )
 
+var Databasefile string = "passwords.json"
+
 func Add(entry Entry) (string, error) {
 	var entries []Entry
 
-	data, err := os.ReadFile("password.json")
+	data, err := os.ReadFile(Databasefile)
 
 	if err != nil {
 		SaveData(entries, entry)
@@ -35,9 +37,9 @@ func SaveData(entries []Entry, entry Entry) (string, error) {
 
 	data, _ := json.Marshal(entries)
 
-	// os.WriteFile("password.json", data, 0644)
+	// os.WriteFile(database, data, 0644)
 
-	err := os.WriteFile("password.json", data, 0644)
+	err := os.WriteFile(Databasefile, data, 0644)
 
 	if err != nil {
 		return "", err
@@ -47,7 +49,7 @@ func SaveData(entries []Entry, entry Entry) (string, error) {
 
 func Retrieve(username string) (Entry, error) {
 	var userdata Entry
-	data, err := os.ReadFile("password.json")
+	data, err := os.ReadFile(Databasefile)
 	if err != nil {
 		return Entry{}, err
 	}
@@ -70,7 +72,7 @@ func Retrieve(username string) (Entry, error) {
 }
 
 func List() ([]DuplicateTypeEntry, error) {
-	data, err := os.ReadFile("password.json")
+	data, err := os.ReadFile(Databasefile)
 	if err != nil {
 		return make([]DuplicateTypeEntry, 0), errors.New("An error occured during database reading")
 	}
@@ -82,7 +84,7 @@ func List() ([]DuplicateTypeEntry, error) {
 }
 
 func UpdatePassword(username, password string) (string, error) {
-	data, err := os.ReadFile("password.json")
+	data, err := os.ReadFile(Databasefile)
 	if err != nil {
 		panic(err)
 	}
@@ -108,13 +110,13 @@ func UpdatePassword(username, password string) (string, error) {
 		return "", errors.New("Data has been corrupted")
 	}
 
-	err = os.WriteFile("password.json", data, 0644)
+	err = os.WriteFile(Databasefile, data, 0644)
 
 	return "Password has been changed", nil
 }
 
 func DeleteUser(username string) (string, error) {
-	data, err := os.ReadFile("password.json")
+	data, err := os.ReadFile(Databasefile)
 	if err != nil {
 		panic(err)
 	}
@@ -139,7 +141,7 @@ func DeleteUser(username string) (string, error) {
 		panic(err)
 	}
 
-	err = os.WriteFile("password.json", data, 0644)
+	err = os.WriteFile(Databasefile, data, 0644)
 
 	return "User has been removed.", nil
 }
