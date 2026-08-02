@@ -71,16 +71,16 @@ func Retrieve(username string) (Entry, error) {
 	return userdata, nil
 }
 
-func List() []DuplicateTypeEntry {
+func List() ([]DuplicateTypeEntry, error) {
 	data, err := os.ReadFile("password.json")
 	if err != nil {
-		panic(err)
+		return make([]DuplicateTypeEntry, 0), errors.New("An error occured during database reading")
 	}
 
 	var entries []DuplicateTypeEntry
 	json.Unmarshal(data, &entries)
 
-	return entries
+	return entries, nil
 }
 
 func UpdatePassword(username, password string) string {

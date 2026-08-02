@@ -33,7 +33,12 @@ func HandleDelete() {
 }
 
 func HandleList() {
-
+	fmt.Println("Listing Data... Please Wait.")
+	entries, err := List()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(entries)
 }
 
 func SuccessOrError(success string, err error) {

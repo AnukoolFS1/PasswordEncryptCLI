@@ -30,9 +30,7 @@ func main() {
 		HandleGet()
 
 	case "list":
-		fmt.Println("You want to list")
-		entries := List()
-		fmt.Println(entries)
+		HandleList()
 
 	case "delete":
 		if len(TerminalArgs) == 2 || len(TerminalArgs) < 3 {
