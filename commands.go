@@ -25,11 +25,21 @@ func HandleGet() {
 }
 
 func HandleUpdate() {
-
+	if len(TerminalArgs) == 3 || len(TerminalArgs) < 4 {
+		fmt.Println("Please provide a username to delete entry.")
+	} else {
+		result, err := UpdatePassword(TerminalArgs[2], TerminalArgs[3])
+		SuccessOrError(result, err)
+	}
 }
 
 func HandleDelete() {
-
+	if len(TerminalArgs) == 2 || len(TerminalArgs) < 3 {
+		fmt.Println("Please provide a username to delete entry.")
+	} else {
+		result, err := DeleteUser(TerminalArgs[2])
+		SuccessOrError(result, err)
+	}
 }
 
 func HandleList() {

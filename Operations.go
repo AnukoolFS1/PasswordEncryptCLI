@@ -81,7 +81,7 @@ func List() ([]DuplicateTypeEntry, error) {
 	return entries, nil
 }
 
-func UpdatePassword(username, password string) string {
+func UpdatePassword(username, password string) (string, error) {
 	data, err := os.ReadFile("password.json")
 	if err != nil {
 		panic(err)
@@ -105,15 +105,15 @@ func UpdatePassword(username, password string) string {
 
 	data, err = json.Marshal(NewEntries)
 	if err != nil {
-		panic(err)
+		return "", errors.New("Data has been corrupted")
 	}
 
 	err = os.WriteFile("password.json", data, 0644)
 
-	return "Password has been changed"
+	return "Password has been changed", nil
 }
 
-func DeleteUser(username string) string {
+func DeleteUser(username string) (string, error) {
 	data, err := os.ReadFile("password.json")
 	if err != nil {
 		panic(err)
@@ -131,7 +131,7 @@ func DeleteUser(username string) string {
 		usernames[entry.Username]++
 	}
 	if _, exist := usernames[username]; !exist {
-		return "No Username has been found"
+		return "", errors.New("No Username has been found")
 	}
 
 	data, err = json.Marshal(NewEntries)
@@ -141,7 +141,7 @@ func DeleteUser(username string) string {
 
 	err = os.WriteFile("password.json", data, 0644)
 
-	return "User has been removed."
+	return "User has been removed.", nil
 }
 
 // func basic() []Entry {
