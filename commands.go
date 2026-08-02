@@ -16,6 +16,10 @@ func HandleAdd(args []string) {
 }
 
 func HandleGet(args []string) {
+	if len(args) < 2 {
+		SuccessOrError("", errors.New("Please provide username:\nget [username]"))
+		return
+	}
 	fmt.Println("Retrieving data, Please Wait...")
 	userdata, err := Retrieve(args[2])
 	SuccessOrError(userdata.String(), err)

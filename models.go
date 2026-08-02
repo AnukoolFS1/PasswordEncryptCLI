@@ -18,8 +18,7 @@ func (entry Entry) String() string {
 func (entry Entry) SafeString() string {
 
 	return fmt.Sprintf(
-		"\nUsername: %s | Service: %s | Password: %s",
+		"\nUsername: %s | Service: %s | Password: ",
 		entry.Username,
-		entry.Service,
-		entry.Password)
+		entry.Service)
 }

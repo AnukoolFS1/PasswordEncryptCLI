@@ -57,14 +57,20 @@ func UpdatePassword(username, password string) (string, error) {
 	}
 
 	var NewEntries []Entry = make([]Entry, 0)
+	found := false
 
 	for _, entry := range entries {
 		if username == entry.Username {
 			entry.Password = password
 			NewEntries = append(NewEntries, entry)
+			found = true
 		} else {
 			NewEntries = append(NewEntries, entry)
 		}
+	}
+
+	if !found {
+		return "", errors.New("User not found.")
 	}
 
 	_, erro := SaveEntries(NewEntries)

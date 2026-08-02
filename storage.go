@@ -25,9 +25,12 @@ func LoadEntries() ([]Entry, error) {
 }
 
 func SaveEntries(entries []Entry) (string, error) {
-	data, _ := json.MarshalIndent(entries,"", "	")
+	data, err := json.MarshalIndent(entries, "", "	")
+	if err != nil {
+		return "", err
+	}
 
-	err := os.WriteFile(Databasefile, data, 0644)
+	err = os.WriteFile(Databasefile, data, 0644)
 
 	if err != nil {
 		return "", err
