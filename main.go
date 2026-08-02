@@ -24,21 +24,10 @@ func main() {
 
 	switch TerminalArgs[1] {
 	case "add":
-		if len(TerminalArgs) < 5 {
-			fmt.Println("Please provide:")
-			fmt.Println("add [service] [username] [password]")
-			return
-		}
-		fmt.Println("Adding data, Please Wait...")
-		result, err = Add(Entry{TerminalArgs[2], TerminalArgs[3], TerminalArgs[4]})
+		HandleAdd()
 
 	case "get":
-		fmt.Println("Retrieving data, Please Wait...")
-		userdata, err := Retrieve(TerminalArgs[2])
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(userdata)
+		HandleGet()
 
 	case "list":
 		fmt.Println("You want to list")
@@ -58,7 +47,7 @@ func main() {
 		} else {
 			result = UpdatePassword(TerminalArgs[2], TerminalArgs[3])
 		}
-	
+
 	default:
 		fmt.Println("Command not found")
 
