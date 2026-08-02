@@ -7,7 +7,7 @@ import (
 func main() {
 	TerminalArgs := os.Args
 
-	if !CheckArgs(TerminalArgs) {
+	if !CheckArgs(TerminalArgs) || !ConfirmMaster() {
 		return
 	}
 

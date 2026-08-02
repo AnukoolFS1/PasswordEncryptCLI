@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+var MasterPassword = "IamOwner"
+
 func CheckArgs(args []string) bool {
 	if len(args) < 2 {
 		fmt.Println("Usage:")
@@ -38,8 +40,20 @@ func ArgsFunc(args []string) {
 	case "create-db":
 		CreateDb()
 		fmt.Println("Database has been created.")
-		
+
 	default:
 		fmt.Println("Command not found")
 	}
+}
+
+func ConfirmMaster() bool {
+	var password string
+	fmt.Println("Enter the master password")
+	fmt.Scanln(&password)
+
+	if password != MasterPassword {
+		fmt.Println("You are not authorised")
+		return false
+	}
+	return true
 }
