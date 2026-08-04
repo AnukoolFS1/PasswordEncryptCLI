@@ -57,3 +57,4 @@ func ConfirmMaster() bool {
 	}
 	return true
 }
+
