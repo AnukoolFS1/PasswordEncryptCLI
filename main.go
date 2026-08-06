@@ -16,8 +16,8 @@ func main() {
 
 	// ArgsFunc(TerminalArgs)
 	test()
+	testTwo()
 }
-
 
 func test() {
 	entries := []Entry{
@@ -33,4 +33,12 @@ func test() {
 	fmt.Printf("%T\n", data)
 	fmt.Println(data)
 	fmt.Println(string(data))
+}
+
+func testTwo() {
+	key := []byte("12345678901234567890123456789012")
+
+	fmt.Println(key)
+	fmt.Println(len(key))
+	fmt.Printf("%T\n", key)
 }
