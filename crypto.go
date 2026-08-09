@@ -4,6 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"errors"
 	"fmt"
 )
 
@@ -33,8 +34,36 @@ func Encrypt(data []byte, key []byte) ([]byte, error) {
 	// return cyphertext, nil
 }
 
+func Decrypt(encrypted []byte, key []byte) ([]byte, error) {
 
-func TestThree () {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+
+	gcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return nil, err
+	}
+
+	nonceSize := gcm.NonceSize()
+
+	if len(encrypted) < nonceSize {
+		return nil, errors.New("encrypted data is too short")
+	}
+
+	nonce := encrypted[:nonceSize]
+	ciphertext := encrypted[nonceSize:]
+
+	data, err := gcm.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
+func TestThree() {
 	key := []byte("12345678901234567890123456789012")
 
 	message := []byte("Hello, Anukool!")
@@ -45,5 +74,13 @@ func TestThree () {
 	}
 
 	fmt.Println("Original:", string(message))
-	fmt.Println("Encrypted:", encrypted)
+	fmt.Printf("Encrypted: %x\n", encrypted)
+
+	decrypted, err := Decrypt(encrypted, []byte("98765432109876543210987654321098"))
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Dencrypted:", string(decrypted))
+
 }
