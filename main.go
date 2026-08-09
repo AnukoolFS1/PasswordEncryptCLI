@@ -15,8 +15,9 @@ func main() {
 	// }
 
 	// ArgsFunc(TerminalArgs)
-	test()
-	testTwo()
+	// test()
+	// testTwo()
+	TestThree()
 }
 
 func test() {
