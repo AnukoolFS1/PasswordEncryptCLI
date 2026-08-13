@@ -8,17 +8,37 @@ import (
 
 var Databasefile string = "passwords.json"
 
-func LoadEntries() ([]Entry, error) {
-	var entries []Entry
+func LoadEntries(password string) ([]Entry, error) {
 
-	data, err := os.ReadFile(Databasefile)
+	var database EncryptedDatabase
+
+	// 1. Read the encrypted file
+	fileData, err := os.ReadFile(Databasefile)
 	if err != nil {
-		return make([]Entry, 0), errors.New("Database not found! Please create a new database first with command. PasswordEncrypt create-db")
+		return nil, errors.New("database not found")
 	}
+
+	// 2. Decode the outer JSON
+	err = json.Unmarshal(fileData, &database)
+	if err != nil {
+		return nil, errors.New("database has been corrupted")
+	}
+
+	// 3. Derive the AES key using password + stored salt
+	key := DeriveKey(password, database.Salt)
+
+	// 4. Decrypt the encrypted data
+	data, err := Decrypt(database.Data, key)
+	if err != nil {
+		return nil, errors.New("incorrect master password or corrupted database")
+	}
+
+	// 5. Turn decrypted JSON back into []Entry
+	var entries []Entry
 
 	err = json.Unmarshal(data, &entries)
 	if err != nil {
-		return make([]Entry, 0), errors.New("Data has been corrupted")
+		return nil, errors.New("decrypted data is corrupted")
 	}
 
 	return entries, nil
