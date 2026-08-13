@@ -4,6 +4,11 @@ import (
 	"fmt"
 )
 
+type EncryptedDatabase struct { // for data storage in encryption
+	Salt []byte `json:"salt"`
+	Data []byte `json:"data"`
+}
+
 type Entry struct {
 	Service  string
 	Username string

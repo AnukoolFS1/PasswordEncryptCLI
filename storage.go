@@ -24,18 +24,39 @@ func LoadEntries() ([]Entry, error) {
 	return entries, nil
 }
 
-func SaveEntries(entries []Entry) (string, error) {
-	data, err := json.MarshalIndent(entries, "", "	")
+func SaveEntries(entries []Entry, key []byte, salt []byte) (string, error) {
+
+	// Convert Entries to JSON
+	data, err := json.Marshal(entries)
 	if err != nil {
 		return "", err
 	}
 
-	err = os.WriteFile(Databasefile, data, 0644)
-
+	// 2. Encrypt the JSON
+	encrypted, err := Encrypt(data, key)
 	if err != nil {
 		return "", err
 	}
-	return "File has been saved", nil //errors.New("Something wrong")
+
+	// 3. Put salt + encrypted data together
+	database := EncryptedDatabase{
+		Salt: salt,
+		Data: encrypted,
+	}
+
+	// 4. Convert that structure to JSON
+	fileData, err := json.Marshal(database)
+	if err != nil {
+		return "", err
+	}
+
+	// 5. Write it to disk
+	err = os.WriteFile(Databasefile, fileData, 0644)
+	if err != nil {
+		return "", err
+	}
+
+	return "File has been saved", nil
 }
 
 func CreateDb() (string, error) {

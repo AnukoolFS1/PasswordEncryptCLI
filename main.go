@@ -18,7 +18,8 @@ func main() {
 	// test()
 	// testTwo()
 	// TestThree()
-	TestKey()
+	// TestKey()
+	TestFour()
 }
 
 func test() {
@@ -60,4 +61,25 @@ func TestKey() {
 	fmt.Println("Length:", len(key2))
 	same := string(key1) == string(key2)
 	fmt.Println(same)
+}
+
+func TestFour() {
+	salt := []byte("some-random-salt")
+	key := DeriveKey("IamOwner", salt)
+
+	entries := []Entry{
+		{
+			Service:  "GitHub",
+			Username: "anukool",
+			Password: "secret123",
+		},
+	}
+
+	result, err := SaveEntries(entries, key, salt)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(result)
 }
