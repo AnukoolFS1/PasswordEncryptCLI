@@ -108,33 +108,3 @@ func DeleteUser(username string, Mpassword string) (string, error) {
 
 	return "User has been removed.", nil
 }
-
-// func basic() []Entry {
-// 	var entries []Entry
-
-// 	entry := Entry{
-// 		"Git", "Anukool", "123456",
-// 	}
-
-// 	entries = append(entries, entry)
-
-// 	fmt.Println(entries)
-
-// 	var service string
-// 	var username string
-// 	var password string
-
-// 	fmt.Println("Servie: ")
-// 	fmt.Scanln(&service)
-
-// 	fmt.Println("Username: ")
-// 	fmt.Scanln(&username)
-
-// 	fmt.Println("Password: ")
-// 	fmt.Scanln(&password)
-
-// 	entry = Entry{Service: service, Username: username, Password: password}
-// 	entries = append(entries, entry)
-
-// 	return entries
-// }

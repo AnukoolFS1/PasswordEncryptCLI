@@ -14,4 +14,3 @@ func DeriveKey(password string, salt []byte) []byte {
 		32,
 	)
 }
-
