@@ -8,20 +8,20 @@ import (
 
 var Databasefile string = "passwords.json"
 
-func LoadEntries(password string) ([]Entry, error) {
+func LoadEntries(password string) ([]Entry, []byte, error) {
 
 	var database EncryptedDatabase
 
 	// 1. Read the encrypted file
 	fileData, err := os.ReadFile(Databasefile)
 	if err != nil {
-		return nil, errors.New("database not found")
+		return nil, nil, errors.New("database not found")
 	}
 
 	// 2. Decode the outer JSON
 	err = json.Unmarshal(fileData, &database)
 	if err != nil {
-		return nil, errors.New("database has been corrupted")
+		return nil, nil, errors.New("database has been corrupted")
 	}
 
 	// 3. Derive the AES key using password + stored salt
@@ -30,7 +30,7 @@ func LoadEntries(password string) ([]Entry, error) {
 	// 4. Decrypt the encrypted data
 	data, err := Decrypt(database.Data, key)
 	if err != nil {
-		return nil, errors.New("incorrect master password or corrupted database")
+		return nil, nil, errors.New("incorrect master password or corrupted database")
 	}
 
 	// 5. Turn decrypted JSON back into []Entry
@@ -38,10 +38,10 @@ func LoadEntries(password string) ([]Entry, error) {
 
 	err = json.Unmarshal(data, &entries)
 	if err != nil {
-		return nil, errors.New("decrypted data is corrupted")
+		return nil, nil, errors.New("decrypted data is corrupted")
 	}
 
-	return entries, nil
+	return entries, database.Salt, nil
 }
 
 func SaveEntries(entries []Entry, key []byte, salt []byte) (string, error) {

@@ -19,7 +19,8 @@ func main() {
 	// testTwo()
 	// TestThree()
 	// TestKey()
-	TestFour()
+	// TestFour()
+	TestDatabase()
 }
 
 func test() {
@@ -82,4 +83,32 @@ func TestFour() {
 	}
 
 	fmt.Println(result)
+}
+
+func TestDatabase() {
+
+	password := "IamOwners"
+
+	entries := []Entry{
+		{
+			Service:  "GitHub",
+			Username: "anukool",
+			Password: "secret123",
+		},
+	}
+
+	salt := []byte("some-random-salt")
+	key := DeriveKey(password, salt)
+
+	_, err := SaveEntries(entries, key, salt)
+	if err != nil {
+		panic(err)
+	}
+
+	loaded, _, err := LoadEntries("password")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(loaded)
 }
