@@ -4,6 +4,14 @@ import (
 	"fmt"
 )
 
+var Commands = map[string]struct{}{
+	"add":       {},
+	"get":       {},
+	"list":      {},
+	"delete":    {},
+	"update":    {},
+	"create-db": {}}
+
 var MasterPassword = "IamOwner"
 
 func CheckArgs(args []string) bool {
@@ -14,6 +22,15 @@ func CheckArgs(args []string) bool {
 		fmt.Println("delete [username]")
 		fmt.Println("get [username]")
 		fmt.Println("list")
+		return false
+	}
+
+	_, CommandExists := Commands[args[1]]
+
+	fmt.Println(CommandExists)
+
+	if !CommandExists {
+		fmt.Println("Command not found")
 		return false
 	}
 
@@ -38,11 +55,11 @@ func ArgsFunc(args []string, Mpassword string) {
 		HandleUpdate(args, Mpassword)
 
 	case "create-db":
-		CreateDb()
+		CreateDb(Mpassword)
 		fmt.Println("Database has been created.")
 
 	default:
-		fmt.Println("Command not found")
+		return
 	}
 }
 

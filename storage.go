@@ -79,9 +79,12 @@ func SaveEntries(entries []Entry, key []byte, salt []byte) (string, error) {
 	return "File has been saved", nil
 }
 
-func CreateDb() (string, error) {
+func CreateDb(password string) (string, error) {
 	data, _ := json.Marshal(make([]Entry, 0))
 	err := os.WriteFile(Databasefile, data, 0644)
+	salt := []byte("some-random-salt")
+
+	SaveEntries(make([]Entry, 0), DeriveKey(password, salt), salt)
 
 	if err != nil {
 		return "", err

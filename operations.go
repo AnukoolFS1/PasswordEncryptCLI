@@ -5,8 +5,8 @@ import (
 )
 
 func Add(entry Entry, Mpassword string) (string, error) {
-	entries, salt, err := LoadEntries(Mpassword)
 
+	entries, salt, err := LoadEntries(Mpassword)
 	if err != nil {
 		return "", err
 	}
@@ -19,7 +19,7 @@ func Add(entry Entry, Mpassword string) (string, error) {
 
 	entries = append(entries, entry)
 
-	_, err = SaveEntries(entries, []byte(Mpassword), salt)
+	_, err = SaveEntries(entries, DeriveKey(Mpassword, salt), salt)
 	if err != nil {
 		return "", err
 	}
@@ -73,7 +73,7 @@ func UpdatePassword(username, password, Mpassword string) (string, error) {
 		return "", errors.New("User not found.")
 	}
 
-	_, erro := SaveEntries(NewEntries, []byte(Mpassword), salt)
+	_, erro := SaveEntries(NewEntries, DeriveKey(Mpassword, salt), salt)
 	if erro != nil {
 		return "", erro
 	}
@@ -101,7 +101,7 @@ func DeleteUser(username string, Mpassword string) (string, error) {
 		return "", errors.New("User not found.")
 	}
 
-	_, err = SaveEntries(NewEntries, []byte(Mpassword), salt)
+	_, err = SaveEntries(NewEntries, DeriveKey(Mpassword, salt), salt)
 	if err != nil {
 		return "", err
 	}

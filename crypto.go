@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"errors"
-	"fmt"
 )
 
 func Encrypt(data []byte, key []byte) ([]byte, error) {
@@ -61,26 +60,4 @@ func Decrypt(encrypted []byte, key []byte) ([]byte, error) {
 	}
 
 	return data, nil
-}
-
-func TestThree() {
-	key := []byte("12345678901234567890123456789012")
-
-	message := []byte("Hello, Anukool!")
-
-	encrypted, err := Encrypt(message, key)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Original:", string(message))
-	fmt.Printf("Encrypted: %x\n", encrypted)
-
-	decrypted, err := Decrypt(encrypted, []byte("98765432109876543210987654321098"))
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Dencrypted:", string(decrypted))
-
 }

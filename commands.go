@@ -49,6 +49,11 @@ func HandleList(args []string, password string) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	if len(entries) == 0 {
+		fmt.Println("Database is empty.")
+		return
+	}
 	for _, entry := range entries {
 		fmt.Println(entry.SafeString())
 	}
